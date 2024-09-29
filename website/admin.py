@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect,send_from_directory ,request
+from flask import Blueprint, render_template, flash, redirect, send_from_directory, request, jsonify
 from flask_login import login_required, current_user
 from .forms import ShopItemForm ,FileRequired, FileField, FileAllowed
 from werkzeug.utils import secure_filename
@@ -8,7 +8,6 @@ admin = Blueprint('admin', __name__)
 
 
 @admin.route('/media/<path:filename>')
-@login_required
 def get_image(filename):
     return send_from_directory('../media', filename)
 
