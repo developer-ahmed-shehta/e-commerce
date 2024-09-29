@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, flash,request
+from flask import Blueprint, render_template, redirect, flash,request,jsonify
 from .models import Product, Cart
 from flask_login import current_user, login_required
 from . import db
@@ -8,9 +8,7 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def home():
     items = Product.query.filter_by(flash_sale=True)
-
-    return render_template('home.html', items=items,cart=Cart.query.filter_by(customer_link=current_user.id).all()
-                                                                                                if current_user.is_authenticated else None)
+    return render_template('home.html', items=items,cart=Cart.query.filter_by(customer_link=current_user.id).all() if current_user.is_authenticated else [])
 
 @views.route('/add-to-cart/<int:item_id>')
 @login_required
@@ -57,9 +55,62 @@ def show_cart():
 @views.route('/pluscart')
 @login_required
 def pluscart():
-    pass
+    if request.method == "GET":
+        cart_id = request.args.get('cart_id')
+        cart_item = Cart.query.get(cart_id)
+        cart_item.quantity += 1
+        db.session.commit()
+        amount =0
+        for item in Cart.query.filter_by(customer_link=current_user.id).all():
+            amount += item.product.current_price * item.quantity
+
+        data = {
+            'quantity': cart_item.quantity,
+            'amount': amount,
+            'total': amount+200
+        }
+        return jsonify(data)
 
 @views.route('/minuscart')
 @login_required
 def minuscart():
-    pass
+    if request.method == "GET":
+        cart_id = request.args.get('cart_id')
+        cart_item = Cart.query.get(cart_id)
+        if cart_item.quantity !=1:
+            cart_item.quantity -=1
+        db.session.commit()
+
+        amount =0
+        for item in Cart.query.filter_by(customer_link=current_user.id):
+            amount += item.product.current_price * item.quantity
+
+        data = {
+            'quantity': cart_item.quantity,
+            'amount': amount,
+            'total': amount+200
+        }
+        print(data)
+        return jsonify(data)
+
+@views.route('/removecart')
+@login_required
+def remove():
+    if request.method == "GET":
+        cart_id = request.args.get('cart_id')
+        cart_item = Cart.query.get(cart_id)
+
+        db.session.delete(cart_item)
+        db.session.commit()
+
+        amount =0
+        for item in Cart.query.filter_by(customer_link=current_user.id).all():
+            amount += item.product.current_price * item.quantity
+
+        data = {
+            'quantity': cart_item.quantity,
+            'amount': amount,
+            'total': amount+200
+        }
+        print(data)
+        return jsonify(data)
