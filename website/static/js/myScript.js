@@ -10,7 +10,6 @@ $('.plus-cart').click(function(){
         data: {
             cart_id: id
         },
-
         success: function(data){
             console.log(data)
             quantity.innerText = data.quantity
