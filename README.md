@@ -4,3 +4,7 @@
 + Implemented authentication and authorization mechanisms to ensure secure user access control.
 + Designed and managed a complex relational database structure tooptimize data storage, retrieval, and performance.
 + Applied Object-Oriented Programming (OOP) principles throughout the project, ensuring modular, scalable, and maintainable code
+
+# Install Instruction on ubuntu 
+''' sudo apt install python3 '''
+
