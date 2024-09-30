@@ -13,7 +13,7 @@
 ```
 ### install requirements.txt 
 > go to dir whrere requirements.txt 
-'''
+```
 pip install -r requirements.txt
-'''
+```
 
