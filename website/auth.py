@@ -104,3 +104,4 @@ def change_password(customer_id):
             flash('Current password does not match. Please try again.')
 
     return render_template('change_password.html',form=form)
+

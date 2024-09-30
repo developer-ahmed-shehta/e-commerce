@@ -46,11 +46,12 @@ class Product(db.Model):
     def __str__(self):
         return '<product %r>' % self.name
 
-class Order(db.Model):
+
+class Order(db.Model):  # order has
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    status = db.Column(db.Boolean, nullable=False)
+    status = db.Column(db.String(100), nullable=False)
     payment_id = db.Column(db.String(1000), nullable=False)
 
     customer_link = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
@@ -59,7 +60,8 @@ class Order(db.Model):
     def __str__(self):
         return '<order %r>' % self.product_id
 
-class Cart(db.Model):
+
+class Cart(db.Model):  # cart has 1 product with any quantity
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
 
@@ -68,3 +70,4 @@ class Cart(db.Model):
 
     def __str__(self):
         return '<cart %r>' % self.id
+
