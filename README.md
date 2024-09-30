@@ -7,18 +7,18 @@
 
 ## Install Instruction on ubuntu 
 
-### install python3
+### 1- install python3
 ```
  sudo apt install python3
 ```
-### install pip3 for easy installation of libraries
+### 2- install pip3 for easy installation of libraries
 ```
 apt-get -y install python3-pip
 ```
-### install requirements.txt 
+### 3- install requirements.txt 
 > go to dir whrere requirements.txt 
 ```
 pip3 install -r requirements.txt
 ```
 
-### now convert to production stage prefer use wsgi
+### 4- now convert to production stage prefer use wsgi
