@@ -6,5 +6,5 @@
 + Applied Object-Oriented Programming (OOP) principles throughout the project, ensuring modular, scalable, and maintainable code
 
 # Install Instruction on ubuntu 
-''' sudo apt install python3 '''
+' sudo apt install python3 '
 
