@@ -11,9 +11,14 @@
 ```
  sudo apt install python3
 ```
+### install pip3 for easy installation of libraries
+```
+apt-get -y install python3-pip
+```
 ### install requirements.txt 
 > go to dir whrere requirements.txt 
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
+### now convert to production stage prefer use wsgi
