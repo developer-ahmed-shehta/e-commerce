@@ -140,7 +140,7 @@ def place_order():
                 new_order = Order()
                 new_order.quantity = cart.quantity
                 new_order.price = cart.product.current_price
-                new_order.status = "PENDING"  # change later
+                new_order.status = "Pending"  # change later
                 new_order.payment_id = random.randint(1, 1000)  # change later
 
                 new_order.customer_link = cart.customer_link
@@ -158,7 +158,7 @@ def place_order():
         flash('Your Cart is Empty')
         return redirect('/')
 
-@views.route('/order')
+@views.route('/orders')
 @login_required
 def order():
     orders = Order.query.filter_by(customer_link=current_user.id).all()
