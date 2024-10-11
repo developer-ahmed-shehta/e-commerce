@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, flash, redirect, send_from_directory, request, jsonify
 from flask_login import login_required, current_user
-from .forms import ShopItemForm ,FileRequired, FileField, FileAllowed
+from .forms import ShopItemForm, FileRequired, FileField, FileAllowed, OrderForm
 from werkzeug.utils import secure_filename
-from .models import Product
+from .models import Product, Order, Customer
 from . import db
 admin = Blueprint('admin', __name__)
 
@@ -17,7 +17,7 @@ def create():
     return 'this is the admin page'
 
 
-@admin.route('/add-shop-item', methods=['GET', 'POST'])
+@admin.route('/add-shop-items', methods=['GET', 'POST'])
 @login_required
 def add_shop():
     if current_user.id == 1:
@@ -59,7 +59,8 @@ def add_shop():
 
     return render_template('404.html')
 
-@admin.route('/shop-item', methods=['GET', 'POST'])
+
+@admin.route('/shop-items', methods=['GET', 'POST'])
 @login_required
 def shop_items():
     if current_user.id == 1:
@@ -67,6 +68,7 @@ def shop_items():
         return render_template('shop_items.html', items=items)
 
     return render_template('404.html')
+
 
 @admin.route('/update-item/<int:item_id>', methods=['GET', 'POST'])
 @login_required
@@ -116,6 +118,7 @@ def update_item(item_id):
 
     return render_template('404.html')
 
+
 @admin.route('/delete-item/<int:item_id>', methods=['GET', 'POST'])
 @login_required
 def delete_item(item_id):
@@ -129,4 +132,57 @@ def delete_item(item_id):
         except Exception as e:
             print(e)
             flash(f'Item Not Deleted!')
+    return render_template('404.html')
+
+
+@admin.route('/view-orders')
+@login_required
+def view_order():
+    if current_user.id == 1:
+        orders = Order.query.all()
+        return render_template('view_orders.html', orders=orders)
+
+    return render_template('404.html')
+
+
+@admin.route('/update-order/<int:order_id>', methods=["GET", "POST"])
+@login_required
+def update_order(order_id):
+    if current_user.id == 1:
+        form = OrderForm()
+        order = Order.query.get(order_id)
+
+        if form.validate_on_submit():
+            status = form.order_status.data
+            order.status = status
+            try:
+                db.session.commit()
+                flash(f'Order {order_id} Updated Successfully!')
+                return redirect('/view-orders')
+            except Exception as e:
+                print(e)
+                flash(f'Order {order_id} Not Updated!')
+                return redirect('/view-orders')
+
+        return render_template('order_update.html',form=form)
+
+    return render_template('404.html')
+
+
+@admin.route('/customers')
+@login_required
+def customers():
+    if current_user.id == 1:
+        customers = Customer.query.all()
+        return render_template('customers.html',customers=customers)
+
+    return render_template('404.html')
+
+
+@admin.route('/admin-page')
+@login_required
+def admin_page():
+    if current_user.id == 1:
+        return render_template('admin.html')
+
     return render_template('404.html')

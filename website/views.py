@@ -163,3 +163,14 @@ def place_order():
 def order():
     orders = Order.query.filter_by(customer_link=current_user.id).all()
     return render_template('orders.html', orders=orders)
+
+@views.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == "POST":
+        search = request.form.get('search')
+        print(search)
+        items = Product.query.filter(Product.name.like(f'%{search}%')).all()
+        return render_template('search.html',items=items, cart=Cart.query.filter_by(
+        customer_link=current_user.id).all() if current_user.is_authenticated else [])
+
+    return render_template('search.html')
